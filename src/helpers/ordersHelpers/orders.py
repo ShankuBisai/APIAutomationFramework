@@ -25,6 +25,19 @@ class Orders(object):
         return json.loads(getOrderResponse.text)
 
 
+    def updateOrder(self,id,**kwargs):
+        logger.info("Updating order by ID")
+        for k,v in kwargs.items():
+            if k == "status":
+                payload = {"status":v}
+        updateOrderResponse=self.requestUtility.put(f"orders/{id}",payload=payload)
+        return json.loads(updateOrderResponse.text)
+
+
+
+
+
+
 
 
 
