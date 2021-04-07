@@ -2,6 +2,7 @@ import pytest
 import pprint
 from dao.ordersDao.ordersDao import OrdersDao
 from src.helpers.ordersHelpers.orders import Orders
+import json
 
 
 @pytest.mark.orders
@@ -17,6 +18,7 @@ def testCreatePaidOrderGuestUser():
     assert getOrderResponse["id"] == responseDB[0]["order_id"]
 
 
+
 @pytest.mark.orders
 @pytest.mark.regression
 @pytest.mark.parametrize("status",
@@ -26,6 +28,7 @@ def testCreatePaidOrderGuestUser():
                              pytest.param("on-hold",marks=pytest.mark.tcid57),
 
                          ])
+@pytest.mark.orders
 def testUpdateOrderStatus(status):
     orders = Orders()
     createOrdeResponse=orders.createOrder()
@@ -34,6 +37,19 @@ def testUpdateOrderStatus(status):
     response=orders.updateOrder(createOrdeResponse["id"],status=status)
     newOrderStatus = orders.getOrderById(createOrdeResponse["id"])
     assert response["status"]==newOrderStatus["status"]
+
+
+
+@pytest.mark.orders
+@pytest.mark.tcid58
+def testUpdateOrderStatusToRandomString():
+    orders = Orders()
+    createOrdeResponse = orders.createOrder()
+    response = orders.updateOrder(createOrdeResponse["id"], status="bdbdbabababasbfk")
+    assert json.dumps(response).find("status is not one of pending, processing, on-hold, completed, cancelled, refunded, and failed")
+
+
+
 
 
 
