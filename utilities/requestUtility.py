@@ -19,9 +19,19 @@ class RequestUtlity(object):
         response = requests.post(url = url,data=json.dumps(payload),headers=headers,auth = self.auth)
         return response
 
+
     def get(self,endpoint,header=None,payload = None):
         if not header:
             headers = {"Content-Type": "application/json"}
         url = self.baseURL + endpoint
         response = requests.get(url=url,data = json.dumps(payload),headers=headers, auth=self.auth)
         return response
+
+
+    def put(self,endpoint,payload,header=None,):
+        if not header:
+            headers = {"Content-Type": "application/json"}
+        url = self.baseURL + endpoint
+        response = requests.put(url=url, data=json.dumps(payload), headers=headers, auth=self.auth)
+        return response
+
